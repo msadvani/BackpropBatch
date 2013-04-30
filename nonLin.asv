@@ -1,0 +1,16 @@
+function [ y yp ] = nonLin( x )
+% Nonlinearity in a neural network
+
+%% tanh function
+beta =1;
+y= tanh(beta*x);
+%derivative of y
+yp = beta*(1-y.^2);
+
+
+%% Logistic function
+% 
+%
+%
+end
+
