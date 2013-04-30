@@ -28,36 +28,34 @@ for i=2:N
 end
 
 
-numBP=10; %Number of times to repeat backpropagation
-bpStep=.1; %backprop step size
+numBP=1000; %Number of times to repeat backpropagation
+bpStep=.001; %backprop step size
 
+%Not currently working (clearly wrong for linear) - Find bug.
 for cnt=1:numBP
-    dW = zeros(N,N,M-1);
+    dW = zeros(M,M,N-1);
     %Deltas computed for each layer
     delta = zeros(M,N-1);
     
     [y,yp] = g(x(:,N));
-    delta(:,N-1) = yp*(ySoln-x(:,k));
+    delta(:,N-1) = yp.*(ySoln-x(:,N));
     
-    for k=N-1:2
-        [y,yp] = g(x(:,k)); 
-        delta(:,k-1) = yp.*(W(:,:,k)'*delta(:,k));
-    end
+    %for k=N-1:2
+    %    [y,yp] = g(x(:,k)); 
+    %    delta(:,k-1) = yp.*(W(:,:,k)'*delta(:,k));
+    %end
     
-    for m=1:N-1
-        dW(:,:,m)=delta(:,m)*x(:,m)'
-    end
+    %for m=1:N-1
+    %    dW(:,:,m)=delta(:,m)*x(:,m)';
+    %end
     
-    W = W+bpStep*dW;
     
-    out = 
+    %W = W+bpStep*dW;
+    
+    W = W+delta(:,N-1)*x(:,N-1)
+    
+    out = propSig(1,N,W,s);
+    norm(ySoln-out);
+    
 end
-
-
-
-
-%Now we apply simple backpropagation to solve for the updates
-
-
-
 
