@@ -29,16 +29,46 @@ noise = epsilon*randn(M,N,T);
 x = zeros(M,N,T);
 
 x(:,1,1) = s;
-for t =2:T
-    x(:,:,t)=propNoisySig1T(x(:,:,t-1),s,W,noise(:,:,t));
-end
 
-
-
+x = propNoisySig(x(:,:,1),s,W,noise,T);
 
 %Now average the appropriate quantities
 
-ySoln - x(:,N,:)
+
+
+
+temp = x(:,:,N);
+x = propNoisySig(temp,s,W,noise,T);
+
+deltaX = mean(repmat(ySoln,[1,1,T])- x(:,N,:),3);
+
+c=2; %updating w_(c-1)
+
+tSet = 1:T-N+c;
+correl = zeros(M,M);
+for t=tSet
+    correl = correl+ x(:,N,t+(N-c))*noise(:,c,t)';
+end
+correl = correl/length(tSet); 
+
+dW_R = correl'*deltaX;
+
+
+
+
+
+dW_R*x'
+
+
+
+
+
+% temp = x(:,:,T);
+% x = zeros(M,N,T);
+% x(:,:,1) = temp
+% for t =2:T
+%     x(:,:,t)=propNoisySig1T(x(:,:,t-1),s,W,noise(:,:,t));
+% end
 
 
 

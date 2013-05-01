@@ -1,4 +1,4 @@
-function [xOut] = propNoisySigT(X,s,W,noise,T)
+function [xOut] = propNoisySig(X,s,W,noise,T)
 % Computes the propagation of a network over T timesteps
 
 M = size(X,1);
