@@ -26,8 +26,8 @@ for i=2:N
 end
 
 
-numBP=1000; %Number of times to repeat backpropagation
-bpStep=.001; %backprop step size
+numBP=10000; %Number of times to repeat backpropagation
+bpStep=.01; %backprop step size
 
 %Not currently working (clearly wrong for linear) - Find bug.
 for cnt=1:numBP
