@@ -41,10 +41,15 @@ for cnt=1:numIter
     %Initialize parameters used to compute updates
     dW = zeros(size(W));
     dW_R = zeros(M,N-1);
-
+    
+    %propagate signal enough to remove old trace information
+    for i=1:N
+        x(:,:,T)=pNS1T(x(:,:,T),s,W,epsilon*randn(M,N));
+    end
+    
     %Run algorithm for T timesteps (and store all T)
     noise = epsilon*randn(M,N,T);
-    x = propNoisySig(x(:,:,N),s,W,noise,T);
+    x = propNoisySig(x(:,:,T),s,W,noise,T);
     
     deltaX = mean(repmat(ySoln,[1,1,T])- x(:,N,:),3);
     norm(deltaX) %print average error from target
@@ -66,13 +71,7 @@ for cnt=1:numIter
         dW(:,:,c-1) = gradStep*dW_R(:,c-1)*mean(x(:,c-1,:),3)';
     end
     
-    W= W+dW;
-    
-    %Should really have a small time lag between computations...
-    
-    %noise = epsilon*randn(M,N,T);
-    %x = propNoisySig(x(:,:,N),s,W,noise,T); %push effects of new weights to the end of the network
-    
+    W= W+dW;    
 end
 
 err = norm(deltaX);
