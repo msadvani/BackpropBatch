@@ -2,7 +2,7 @@ function [err] = backprop(s,NumLayers, bpStep, numBP)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
 
-
+err= zeros(1,numBP);
 M = size(s,1);
 N= NumLayers;
 
@@ -31,6 +31,7 @@ end
 
 %Not currently working (clearly wrong for linear) - Find bug.
 for cnt=1:numBP
+    [cnt,numBP]
     x(:,1) = s;
     for i=2:N
         x(:,i)=propSig(1,i,W,s);
@@ -58,7 +59,7 @@ for cnt=1:numBP
     W = W+bpStep*dW;
     
     out = propSig(1,N,W,s);
-    err=norm(ySoln-out)
+    err(cnt)=norm(ySoln-out);
     
 end
 

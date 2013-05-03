@@ -1,6 +1,7 @@
 function [err] = localNoisyBPSim(s,NumLayers, epsilon, gradStep, Tavg, numIter)
 %Input one (in future generalize to more inputs)
 
+err = zeros(1,numIter);
 M = size(s,1);
 N= NumLayers;
 T = Tavg;
@@ -37,7 +38,7 @@ x = propNoisySig(x(:,:,1),s,W,noise,T);
 
 
 for cnt=1:numIter
-    
+    [cnt,numIter]
     %Initialize parameters used to compute updates
     dW = zeros(size(W));
     dW_R = zeros(M,N-1);
@@ -52,7 +53,7 @@ for cnt=1:numIter
     x = propNoisySig(x(:,:,T),s,W,noise,T);
     
     deltaX = mean(repmat(ySoln,[1,1,T])- x(:,N,:),3);
-    norm(deltaX) %print average error from target
+    err(cnt) = norm(deltaX); %print average error from target
     
 
     correl = zeros(M,M,N-1);
@@ -74,7 +75,7 @@ for cnt=1:numIter
     W= W+dW;    
 end
 
-err = norm(deltaX);
+%err = norm(deltaX);
 
 
 
