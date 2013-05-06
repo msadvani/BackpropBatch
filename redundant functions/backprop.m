@@ -9,14 +9,14 @@ N= NumLayers;
 g = @nonLin;
 
 %Init one possible correct set of weights
-Wsoln = randn(M,M,N-1);
+Wsoln = (1/sqrt(M))*randn(M,M,N-1);
 
 %Compute an output value the function can attain (at least with WCorr)
 ySoln = propSig(1,N,Wsoln,s);
 
 
 %Now we initialize the network
-W = randn(M,M,N-1);
+W = (1/sqrt(M))*randn(M,M,N-1);
 
 %Initialize network of Neurons
 x = zeros(M,N);
