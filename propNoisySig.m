@@ -1,5 +1,8 @@
 function [xOut] = propNoisySig(X,s,W,noise,T)
 % Computes the propagation of a network over T timesteps
+if size(noise,3)~=T
+   disp('Temporal dims mismatch in propNoisySig'); 
+end
 
 M = size(X,1);
 N= size(X,2);

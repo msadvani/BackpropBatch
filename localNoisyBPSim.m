@@ -16,13 +16,13 @@ g = @nonLin;
 %s = randn(M,1);
 
 %Init one possible correct set of weights
-Wsoln = randn(M,M,N-1);
+Wsoln = (1/sqrt(M))*randn(M,M,N-1);
 
 %Compute an output value the function can attain (at least with WCorr)
 ySoln = propSig(1,N,Wsoln,s);
 
 %Now we initialize the network
-W = randn(M,M,N-1);
+W = (1/sqrt(M))*randn(M,M,N-1);
 
 %Initialize network of Neurons (for the whole time window)
 x = zeros(M,N,T);
@@ -38,7 +38,7 @@ x = propNoisySig(x(:,:,1),s,W,noise,T);
 
 
 for cnt=1:numIter
-    [cnt,numIter]
+    [cnt,numIter];
     %Initialize parameters used to compute updates
     dW = zeros(size(W));
     dW_R = zeros(M,N-1);
@@ -53,8 +53,8 @@ for cnt=1:numIter
     x = propNoisySig(x(:,:,T),s,W,noise,T);
     
     deltaX = mean(repmat(ySoln,[1,1,T])- x(:,N,:),3);
-    err(cnt) = norm(deltaX); %print average error from target
-    
+    err(cnt) = norm(deltaX); 
+    norm(deltaX) %print average error from target
 
     correl = zeros(M,M,N-1);
     for c=layUp; %updating w_(c-1)

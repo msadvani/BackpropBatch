@@ -64,7 +64,7 @@ for cnt=1:numIter
         x = propNoisySig(x(:,:,T),s,W,noise,T);
 
         deltaX = mean(repmat(ySoln,[1,1,T])- x(:,N,:),3);
-        %need to add an s variable...
+        %need to 
         err(cnt) = norm(deltaX); %print average error from target
 
 

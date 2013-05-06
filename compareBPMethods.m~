@@ -52,8 +52,8 @@ clear all;
 %localNoisyBPSimOnline(rand(10,5),3,.1,1,50,10000);
 
 %localNoisyBPSimOnline(rand(10,5),10,.1,1,50,10000);
-%backpropOnline(rand(10,5),40,.01,10000); 
-localNoisyBPSimOnline(rand(10,5),40,.1,1,100,10000);
+backpropOnline(rand(10,5),40,.01,10000); 
+localNoisyBPSimOnline(rand(10,5),10,.1,1,50,10000);
 
 
 
