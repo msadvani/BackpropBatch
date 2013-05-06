@@ -2,10 +2,11 @@ function [ y ] = propSig(p,q,W,s)
 % Computes the propagation of a signal s from layer p to layer q
 
 if (size(W,1)~=size(W,2))
-    disp('dimension Mismatch'); 
+    disp('dimension Mismatch propSig'); 
+    
 end
-if (size(W,1)~=length(s))
-    disp('dimension Mismatch');
+if (size(W,1)~=size(s,1))
+    disp('dimension Mismatch propSig');
 end
 
 

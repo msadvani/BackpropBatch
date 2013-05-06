@@ -1,6 +1,8 @@
 function [err] = localNoisyBPSep(s,NumLayers, epsilon, gradStep, Tavg, numIter)
 %Input one (in future generalize to more inputs)
-%Seperate the computations between the different layers ()
+%Seperate the computations between the different layers
+
+
 
 M = size(s,1);
 N= NumLayers;
@@ -84,8 +86,6 @@ for cnt=1:numIter
 end
 
 err = norm(deltaX);
-
-
 
 end
 

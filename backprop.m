@@ -29,9 +29,8 @@ end
 %numIter=10000; %Number of times to repeat backpropagation
 %bpStep=.01; %backprop step size
 
-%Not currently working (clearly wrong for linear) - Find bug.
 for cnt=1:numBP
-    [cnt,numBP]
+    [cnt,numBP];
     x(:,1) = s;
     for i=2:N
         x(:,i)=propSig(1,i,W,s);
@@ -61,6 +60,7 @@ for cnt=1:numBP
     out = propSig(1,N,W,s);
     err(cnt)=norm(ySoln-out);
     
+    norm(ySoln-out)
 end
 
 end

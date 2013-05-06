@@ -4,8 +4,8 @@ function [ y yp ] = nonLin( x )
 beta =1; %Scaling param in nonlinearity
 
 %%Linear function
-%y = beta*x;
-%yp = beta*ones(size(x));
+% y = beta*x;
+% yp = beta*ones(size(x));
 
 
 
