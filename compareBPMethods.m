@@ -103,7 +103,7 @@ clear all;
 dataDim=8;
 M=dataDim;
 
-numEx = 1;
+numEx = 2;
 
 numLayers=3;
 N= numLayers;
@@ -128,11 +128,12 @@ Winit = (1/sqrt(M))*randn(M,M,N-1);
  
  hold on;
  
- %[err,errSet] = localNoisyBPSimOnlineInit(input,numLayers,sqrt(stepSz),1,1000, numIter,Wsoln, Winit);
+[err,errSet] = localNoisyBPSimBatchInit(input,numLayers,sqrt(stepSz),1,1000, numIter,Wsoln, Winit);
+%[err,errSet] = localNoisyBPSimOnlineInit(input,numLayers,sqrt(stepSz),1,1000, numIter,Wsoln, Winit);
+ 
 
- %[err,errSet] = localNoisyBPSimOnlineInit(input,numLayers,sqrt(.01),1,1000, numIter,Wsoln, Winit);
-
- [err] = localNoisyBPSepInit(input,numLayers,sqrt(.01),1,1000, numIter,Wsoln, Winit);
+ %[err] = localNoisyBPSepInit(input,numLayers,sqrt(.01),1,1000, numIter,Wsoln, Winit);
+ 
  plot([1:numIter],err,'r--')
 
 
