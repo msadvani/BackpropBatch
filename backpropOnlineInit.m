@@ -1,4 +1,4 @@
-function [err] = backpropOnline(input,NumLayers, bpStep, numBP)
+function [err] = backpropOnlineInit(input,NumLayers, bpStep, numBP, Wsoln, Winit)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
 
@@ -14,16 +14,16 @@ g = @nonLin;
 
 
 %Init one possible correct set of weights
-Wsoln = (1/sqrt(M))*randn(M,M,N-1);
+%Wsoln = (1/sqrt(M))*randn(M,M,N-1);
 %Wsoln = randn(M,M,N-1);
 
 
 %Compute an output value the function can attain (at least with WCorr)
 ySolnSet = propSig(1,N,Wsoln,input);
 
-
 %Now we initialize the network
-W = (1/sqrt(M))*randn(M,M,N-1); %Added term to keep the nonlinearity from getting out of range at initialization
+%W = (1/sqrt(M))*randn(M,M,N-1); %Added term to keep the nonlinearity from getting out of range at initialization
+W = Winit;
 %W = randn(M,M,N-1); (You do need sqrt(M) scaling term!)
 
 s = input(:,1);

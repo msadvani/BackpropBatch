@@ -4,15 +4,15 @@ function [ y yp ] = nonLin( x )
 beta =1; %Scaling param in nonlinearity
 
 %%Linear function
-% y = beta*x;
-% yp = beta*ones(size(x));
+ y = beta*x;
+ yp = beta*ones(size(x));
 
 
 
 %% tanh function
-y= tanh(beta*x);
-%derivative of y
-yp = beta*(1-y.^2);
+% y= tanh(beta*x);
+% %derivative of y
+% yp = beta*(1-y.^2);
 
 
 %% Logistic function

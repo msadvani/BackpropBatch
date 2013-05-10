@@ -1,4 +1,4 @@
-function [err] = localNoisyBPSep(s,NumLayers, epsilon, gradStep, Tavg, numIter)
+function [err] = localNoisyBPSepInit(s,NumLayers, epsilon, gradStep, Tavg, numIter, Wsoln, Winit)
 %Input one (in future generalize to more inputs)
 %Seperate the computations between the different layers
 
@@ -18,13 +18,14 @@ g = @nonLin;
 %s = randn(M,1);
 
 %Init one possible correct set of weights
-Wsoln =(1/sqrt(M))*randn(M,M,N-1);
+%Wsoln =(1/sqrt(M))*randn(M,M,N-1);
 
 %Compute an output value the function can attain (at least with WCorr)
 ySoln = propSig(1,N,Wsoln,s);
 
 %Now we initialize the network
-W = (1/sqrt(M))*randn(M,M,N-1);
+%W = (1/sqrt(M))*randn(M,M,N-1);
+W = Winit;
 
 %Initialize network of Neurons (for the whole time window)
 x = zeros(M,N,T);
