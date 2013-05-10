@@ -2,6 +2,8 @@ function [err] = backpropOnline(input,NumLayers, bpStep, numBP)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
 
+rng(2) %seed random number generator
+
 err= zeros(numBP,1);
 M = size(input,1);
 N= NumLayers;
@@ -10,7 +12,6 @@ numEx=size(input,2);   %Number of examples
 
 errSet= zeros(numBP,numEx);
 g = @nonLin;
-
 
 
 %Init one possible correct set of weights
@@ -69,7 +70,10 @@ for cnt=1:numBP
         for m=1:N-1
             dW(:,:,m)=delta(:,m)*x(:,m)';
         end
-
+        
+        %for testing purposes
+        dW(:,:,1) = 
+        
         W = W+bpStep*dW;
     end
     

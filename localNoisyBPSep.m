@@ -2,6 +2,8 @@ function [err] = localNoisyBPSep(s,NumLayers, epsilon, gradStep, Tavg, numIter)
 %Input one (in future generalize to more inputs)
 %Seperate the computations between the different layers
 
+rng(2) %seed random number generator
+
 err = zeros(1,numIter);
 
 M = size(s,1);

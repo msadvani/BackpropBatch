@@ -103,19 +103,16 @@ clear all;
 dataDim=8;
 M=dataDim;
 
-numEx = 2;
+numEx = 1;
 
-numLayers=3;
+numLayers=6;
 N= numLayers;
 
+% 
+% Wsoln = (1/sqrt(M))*randn(M,M,N-1);
+% Winit = (1/sqrt(M))*randn(M,M,N-1);
 
-Wsoln = (1/sqrt(M))*randn(M,M,N-1);
-Winit = (1/sqrt(M))*randn(M,M,N-1);
-% %input = rand(dataDim,numEx);
-
-% %input = randn(dataDim,numEx);
-
- input = randn(dataDim,numEx);
+input = randn(dataDim,numEx);
  
  %To optimize, want to find the step size to converge the fastest (so need
  %to modify functions: numIter-> maxIter and find a tolerance at which you can stop)
@@ -123,12 +120,12 @@ Winit = (1/sqrt(M))*randn(M,M,N-1);
  numIter = 200;
  stepSz=.01;
   
- err=backpropOnlineInit(input,numLayers,stepSz,numIter,Wsoln, Winit);
+ err=backpropOnline(input,numLayers,stepSz,numIter);
  plot([1:numIter],err);
  
  hold on;
  
-[err,errSet] = localNoisyBPSimBatchInit(input,numLayers,sqrt(stepSz),1,1000, numIter,Wsoln, Winit);
+[err,errSet] = localNoisyBPSimOnline(input,numLayers,sqrt(stepSz),1,1000, numIter);
 %[err,errSet] = localNoisyBPSimOnlineInit(input,numLayers,sqrt(stepSz),1,1000, numIter,Wsoln, Winit);
  
 

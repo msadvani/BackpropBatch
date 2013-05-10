@@ -1,6 +1,8 @@
 function [err] = localNoisyBPSim(s,NumLayers, epsilon, gradStep, Tavg, numIter)
 %Input one (in future generalize to more inputs)
 
+rng(2) %seed random number generator
+
 err = zeros(1,numIter);
 M = size(s,1);
 N= NumLayers;
