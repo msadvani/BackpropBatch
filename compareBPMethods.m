@@ -100,12 +100,12 @@ clear all;
 %% Repeat, but initialize with a solution
  %%%%why isn't it initializing at the same point??
  
-dataDim=8;
+dataDim=10;
 M=dataDim;
 
-numEx = 1;
+numEx = 4;
 
-numLayers=6;
+numLayers=10;
 N= numLayers;
 
 % 
@@ -117,7 +117,7 @@ input = randn(dataDim,numEx);
  %To optimize, want to find the step size to converge the fastest (so need
  %to modify functions: numIter-> maxIter and find a tolerance at which you can stop)
  
- numIter = 200;
+ numIter = 120;
  stepSz=.01;
   
  err=backpropOnline(input,numLayers,stepSz,numIter);
@@ -125,12 +125,15 @@ input = randn(dataDim,numEx);
  
  hold on;
  
-[err,errSet] = localNoisyBPSimOnline(input,numLayers,sqrt(stepSz),1,1000, numIter);
+[err,errSet] = localNoisyBPSimOnline(input,numLayers,sqrt(stepSz),1,330, numIter);
+
+plot([1:numIter],err,'r--')
+
+
+
 %[err,errSet] = localNoisyBPSimOnlineInit(input,numLayers,sqrt(stepSz),1,1000, numIter,Wsoln, Winit);
  
+%[err] = localNoisyBPSepInit(input,numLayers,sqrt(.01),1,1000, numIter,Wsoln, Winit); 
 
- %[err] = localNoisyBPSepInit(input,numLayers,sqrt(.01),1,1000, numIter,Wsoln, Winit);
- 
- plot([1:numIter],err,'r--')
 
 

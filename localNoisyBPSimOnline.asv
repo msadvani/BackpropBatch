@@ -46,7 +46,7 @@ x = propNoisySig(x(:,:,1),s,W,noiseInit,T);
 
 
 for cnt=1:numIter
-    [cnt,numIter]
+    [cnt,numIter];
     
     exSet = randperm(numEx);
    
@@ -95,7 +95,7 @@ for cnt=1:numIter
         
         W= W+dW;   
        
-        errSet(cnt, exCnt) = norm(deltaX)^2;
+        errSet(cnt, exCnt) = norm(deltaX)^2
     end
     
     %propagate each signal and average over only the set of times where ths

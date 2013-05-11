@@ -2,7 +2,7 @@ function [err] = backpropOnline(input,NumLayers, bpStep, numBP)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
 
-rng(2) %seed random number generator
+rng(4); %seed random number generator
 
 err= zeros(numBP,1);
 M = size(input,1);
@@ -61,19 +61,24 @@ for cnt=1:numBP
         [y,yp] = g(x(:,N));
         delta(:,N-1) = yp.*(ySoln-x(:,N));
 
-        for k=N-1:2
+        for k=N-1:-1:2
             [y,yp] = g(x(:,k)); 
             delta(:,k-1) = yp.*(W(:,:,k)'*delta(:,k));
         end
-
 
         for m=1:N-1
             dW(:,:,m)=delta(:,m)*x(:,m)';
         end
         
-        %for testing purposes
-        dW(:,:,1) = 
+%         %for testing purposes
+%         orig = dW(:,:,1)
+%         check=(ySoln-x(:,N));
+%         for m=N-1:-1:1
+%            check=W(:,:,m)'*check; 
+%         end
+%         check*x(:,1)'
         
+       
         W = W+bpStep*dW;
     end
     
@@ -85,7 +90,7 @@ for cnt=1:numBP
     for i=1:numEx
         errSet(cnt,i) = norm(dY(:,i))^2;
     end
-    errSet(cnt,:)
+    errSet(cnt,:);
     
     
 end
