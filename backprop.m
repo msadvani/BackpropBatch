@@ -1,8 +1,8 @@
-function [err] = backpropOnline(input,NumLayers, bpStep, numBP)
+function [err] = backprop(input,NumLayers, bpStep, numBP,randSeed)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
 
-rng(4); %seed random number generator
+rng(randSeed); %seed random number generator
 
 err= zeros(numBP,1);
 M = size(input,1);

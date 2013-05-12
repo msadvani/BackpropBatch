@@ -100,7 +100,7 @@ clear all;
 %% Repeat, but initialize with a solution
  %%%%why isn't it initializing at the same point??
  
-dataDim=10;
+dataDim=20;
 M=dataDim;
 
 numEx = 10;
@@ -113,7 +113,7 @@ input = randn(dataDim,numEx);
  %To optimize, want to find the step size to converge the fastest (so need
  %to modify functions: numIter-> maxIter and find a tolerance at which you can stop)
  
- numIter = 350;
+ numIter = 200;
  stepSz=.01;
   
 
@@ -125,14 +125,7 @@ input = randn(dataDim,numEx);
  
  hold on;
  
-%[err,errSet] = localNoisyBPSim(input,numLayers,.5*sqrt(stepSz),4,150*4, numIter,seed);
-
-%In the high noise low step case, it will converge quite quickly (fast averaging -- low T), but the system is so
-%noisy, on average it will have poor performance...
-
-%[err,errSet] = localNoisyBPSim(input,numLayers,1,stepSz,1000, numIter,seed);
-
-[err,errSet] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,100, numIter,seed);
+[err,errSet] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,150, numIter,2);
 
 plot([1:numIter],err,'r--')
 
