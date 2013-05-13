@@ -132,10 +132,17 @@ input = randn(dataDim,numEx);
 
 %[err,errSet] = localNoisyBPSim(input,numLayers,1,stepSz,1000, numIter,seed);
 
-[err,errSet] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,100, numIter,seed);
+%[err,errSet] = localErfNoisyBPSim(input,numLayers,sqrt(stepSz),1,100, numIter,seed);
+
+%plot([1:numIter],err,'r--')
+
+[err,errSet] = localErfNoisyBPSim(input,numLayers,sqrt(stepSz),1,100, numIter,seed);
+
+plot([1:numIter],err,'g--')
+
+[err,errSet] = localNoisyBPSimOldCopy(input,numLayers,1,sqrt(stepSz),100, numIter,seed);
 
 plot([1:numIter],err,'r--')
-
 
 
 %[err,errSet] = localNoisyBPSimOnlineInit(input,numLayers,sqrt(stepSz),1,1000, numIter,Wsoln, Winit);
