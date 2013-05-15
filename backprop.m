@@ -38,6 +38,20 @@ end
 
 for cnt=1:numBP    
     [cnt,numBP];
+    
+    
+    %Check error of current solution
+    out = propSig(1,N,W,input);
+    
+    dY = ySolnSet - out;
+    %currErr = 0; %Keep track of current error
+    for i=1:numEx
+        errSet(cnt,i) = norm(dY(:,i))^2;
+    end
+    errSet(cnt,:);
+    
+    
+    
     orderEx = randperm(numEx);
     %orderEx
     for examp = orderEx
@@ -71,15 +85,6 @@ for cnt=1:numBP
         W = W+bpStep*dW;
     end
     
-    %Check error of current solution
-    out = propSig(1,N,W,input);
-    
-    dY = ySolnSet - out;
-    %currErr = 0; %Keep track of current error
-    for i=1:numEx
-        errSet(cnt,i) = norm(dY(:,i))^2;
-    end
-    errSet(cnt,:);
         
 end
 err=sum(errSet,2);

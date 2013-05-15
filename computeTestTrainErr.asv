@@ -27,25 +27,30 @@ input = randn(dataDim,numEx);
  
  [err,errSet, W]=backprop(input,numLayers,stepSz,numIter,seed);
 
- plot([1:numIter],err,'g');
+ %plot([1:numIter],err,'g');
  
- hold on;
+ %hold on;
  
   
  
-[err1,energy1] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
-plot([1:numIter],err1,'r--')
-plot([1:numIter],energy1,'b--')
+[err] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
 
+%propSig(1,N,Wout,input);
 
-%err2 = localNoisyBPSimOld(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
- 
-%plot([1:numIter], err2,'b--')
+%plot([1:numIter],err1,'r--')
 
 
 
-title('W11, T=20000')
-legend('exact bp','noisy bp error','noisy bp ener')
+%plot([1:numIter],energy1,'b--')
+
+
+
+%title('Backprop error')
+
+
+
+
+%legend('exact bp','noisy bp error','noisy bp energy')
 
  
  

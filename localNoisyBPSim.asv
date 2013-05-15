@@ -1,4 +1,4 @@
-function [err] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
+function [W, Wou] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
 %Input one (in future generalize to more inputs)
 
 rng(randSeed) %seed random number generator
@@ -55,11 +55,6 @@ x = propNoisySig(x(:,:,1),s,W,noiseInit,T);
 for cnt=1:numIter
     [cnt,numIter]
     
-    out = propSig(1,N,W,input);
-    
-     dY = ySolnSet - out;
-     err(cnt)= norm(dY,'fro')^2;
-    
     exSet = randperm(numEx);
    
     for exCnt = exSet
@@ -103,8 +98,7 @@ for cnt=1:numIter
             dW(:,:,c-1) = -gradStep*mean(repmat(corrTerm,1,M).*repmat(xPrevSet,M,1),3);
         end
         
-        
-        
+        Wout(:,:,:,cnt)=W;
         
         W= W+dW;   
        
@@ -115,21 +109,16 @@ for cnt=1:numIter
         
         %errSet(cnt,exCnt) = mean(Energy);
         
-        %energySet(cnt, exCnt) = mean(Energy);
-        %errSet(cnt, exCnt) = norm(deltaX)^2;
+        energySet(cnt, exCnt) = mean(Energy);
+        errSet(cnt, exCnt) = norm(deltaX)^2;
     end
-    
-    
-    %Wout(:,:,:,cnt)=W;
-        
-     
     
         
 end
 
 
-%err =sum(errSet,2);
-%energy =sum(energySet,2);
+err =sum(errSet,2);
+energy =sum(energySet,2);
 
 
 

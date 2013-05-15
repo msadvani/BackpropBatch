@@ -8,7 +8,7 @@ close all;
 dataDim=5;
 M=dataDim;
 
-numEx =1;
+numEx =5;
 
 numLayers=3;
 N= numLayers;
@@ -18,11 +18,11 @@ input = randn(dataDim,numEx);
  %To optimize, want to find the step size to converge the fastest (so need
  %to modify functions: numIter-> maxIter and find a tolerance at which you can stop)
  
- numIter = 350;
+ numIter = 300;
  stepSz=.01;
  
- seed=17;
- Tavg = 500;
+ seed=7;
+ Tavg = 10;
  
  
  [err,errSet, W]=backprop(input,numLayers,stepSz,numIter,seed);
@@ -34,6 +34,9 @@ input = randn(dataDim,numEx);
   
  
 [err1] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+
+%propSig(1,N,Wout,input);
+
 plot([1:numIter],err1,'r--')
 
 
@@ -42,7 +45,7 @@ plot([1:numIter],err1,'r--')
 
 
 
-title('Backprop error')
+%title('Backprop error')
 
 
 
