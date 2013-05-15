@@ -21,50 +21,38 @@ input = randn(dataDim,numEx);
  stepSz=.01;
  
  seed=17;
- Tavg = 5000;
+ Tavg = 500;
  
  
- [err,wTest1]=backprop(input,numLayers,stepSz,numIter,seed);
+ [err,errSet, W]=backprop(input,numLayers,stepSz,numIter,seed);
 
- plot([1:numIter],wTest1,'g');
+ plot([1:numIter],err,'g');
  
  hold on;
  
   
  
-%err1 = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+err1 = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+plot([1:numIter],err1,'r--')
 
-%plot([1:numIter],err1,'g--')
 
-
-%[err,errSet] = localErfNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
-%plot([1:numIter],err,'g--')
-
-[err2,z,wTest2] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
-
-%[err3,z,wTest3] = localNoisyBPSimOld(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+err2 = localNoisyBPSimOld(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
  
-plot([1:numIter], wTest2,'r')
-%plot([1:numIter], wTest3)
+plot([1:numIter], err2,'b--')
+
 
 
 title('W11, T=20000')
 legend('exact bp','new noisy bp','old noisy bp')
 
-
- %plot([1:numIter],err2,'r--')
- 
- %legend('bp','old local bp','new local bp')
- 
  
  
  
  %% TO DO: Set up bp's to output weights and run a non-noisy error test. This is just a check that everything is working
- %Also need to find out why new local method is doing better and if it is a
- %fluke. It may be related to variance? Or it could be just be due to
- %convexty of error???
 
+ %After outputting W's run a non-noisy test of generalization error? (check
+ %if this is what Ben did)
  
- %Maybe I should also fiddle with eta to see which one is REALLY faster at
- %optimizing...
+ %Also can set eta to automatically update to optimize learning rate
+ %(particularly if working on a bigger problem...)
  

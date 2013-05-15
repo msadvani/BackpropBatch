@@ -1,4 +1,4 @@
-function [err, errSet, wTest] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
+function [err, errSet, W] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
 %Input one (in future generalize to more inputs)
 
 rng(randSeed) %seed random number generator
@@ -42,9 +42,6 @@ noiseInit = epsilon*randn(M,N,T);
 x = propNoisySig(x(:,:,1),s,W,noiseInit,T);
 
 %Now average the appropriate quantities
-
-%for method comparison
-wTest = zeros(numEx,numIter);
 
 for cnt=1:numIter
     [cnt,numIter]
@@ -92,14 +89,11 @@ for cnt=1:numIter
             dW(:,:,c-1) = -gradStep*mean(repmat(corrTerm,1,M).*repmat(xPrevSet,M,1),3);
         end
         
-        
-        wTest(exCnt,cnt)=dW(1,1,1); %checking that an individual delta w follows the same rules.
+       
         
         W= W+dW;   
        
-        
-        
-        
+            
         %These are two different ways of looking at the error, there will
         %always be some average error with noise, but the term we are
         %looking at is the performance of an averaging estimator
@@ -109,28 +103,6 @@ for cnt=1:numIter
         errSet(cnt, exCnt) = norm(deltaX)^2;
     end
     
-    %propagate each signal and average over only the set of times where ths
-    %input has reached the output
-    
-    %Number of counts you want to average to show mean prediction of
-    %network 
-    
-    %max(max(max(abs(W))))
-    
-%     TavgErr = Tavg;
-%     
-%     
-%     exErr = zeros(1,numEx);
-%     
-%     for exNum=1:numEx
-%         
-%         xOut= propNoisySig([input(:,exNum),zeros(M,N-1)],input(:,exNum),W,epsilon*randn(M,N,TavgErr),TavgErr);
-%         avgxOut = mean(xOut(:,N,[N:TavgErr]),3);
-%         exErr(exNum) =norm(avgxOut-ySolnSet(:,numEx))^2;
-%     end
-    
-    %exErr
-    %errSet(cnt,:) = exErr;
         
 end
 

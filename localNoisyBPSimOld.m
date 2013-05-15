@@ -1,4 +1,4 @@
-function [err, errSet, wTest] = localNoisyBPSimOld(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
+function [err, errSet, W] = localNoisyBPSimOld(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
 %Input one (in future generalize to more inputs)
 
 rng(randSeed) %seed random number generator
@@ -41,9 +41,6 @@ noiseInit = epsilon*randn(M,N,T);
 
 x = propNoisySig(x(:,:,1),s,W,noiseInit,T);
 
-%Now average the appropriate quantities
-
-wTest=zeros(numEx,numIter);
 for cnt=1:numIter
     [cnt,numIter]
     
@@ -94,33 +91,8 @@ for cnt=1:numIter
         
         W= W+dW;   
         
-        wTest(exCnt,cnt) = dW(1,1,1);
-        
         errSet(cnt, exCnt) = norm(deltaX)^2;
     end
-    
-    %propagate each signal and average over only the set of times where ths
-    %input has reached the output
-    
-    %Number of counts you want to average to show mean prediction of
-    %network 
-    
-    %max(max(max(abs(W))))
-    
-%     TavgErr = Tavg;
-%     
-%     
-%     exErr = zeros(1,numEx);
-%     
-%     for exNum=1:numEx
-%         
-%         xOut= propNoisySig([input(:,exNum),zeros(M,N-1)],input(:,exNum),W,epsilon*randn(M,N,TavgErr),TavgErr);
-%         avgxOut = mean(xOut(:,N,[N:TavgErr]),3);
-%         exErr(exNum) =norm(avgxOut-ySolnSet(:,numEx))^2;
-%     end
-    
-    %exErr
-    %errSet(cnt,:) = exErr;
         
 end
 
