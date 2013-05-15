@@ -1,4 +1,4 @@
-function [err] = backprop(input,NumLayers, bpStep, numBP,randSeed)
+function [err,wTest] = backprop(input,NumLayers, bpStep, numBP,randSeed)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
 
@@ -36,6 +36,7 @@ for i=2:N
 end
 
 
+wTest = zeros(numEx,numBP);
 %numIter=10000; %Number of times to repeat backpropagation
 %bpStep=.01; %backprop step size
 
@@ -79,6 +80,9 @@ for cnt=1:numBP
 %         check*x(:,1)'
         
        
+        wTest(examp,cnt) = bpStep*dW(1,1,1);
+        
+        
         W = W+bpStep*dW;
     end
     

@@ -7,11 +7,11 @@ close all;
 dataDim=5;
 M=dataDim;
 
-numEx =75;
+numEx =1;
 
 numLayers=3;
 N= numLayers;
-
+rng(5)
 input = randn(dataDim,numEx);
  
  %To optimize, want to find the step size to converge the fastest (so need
@@ -20,30 +20,41 @@ input = randn(dataDim,numEx);
  numIter = 350;
  stepSz=.01;
  
- seed=40;
- Tavg = 200;
+ seed=17;
+ Tavg = 5000;
  
  
- err=backprop(input,numLayers,stepSz,numIter,seed);
- plot([1:numIter],err);
+ [err,wTest1]=backprop(input,numLayers,stepSz,numIter,seed);
+
+ plot([1:numIter],wTest1,'g');
  
  hold on;
  
+  
  
- 
-err1 = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+%err1 = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
 
-plot([1:numIter],err1,'g--')
+%plot([1:numIter],err1,'g--')
 
 
 %[err,errSet] = localErfNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
 %plot([1:numIter],err,'g--')
 
-err2 = localErfNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+[err2,z,wTest2] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+
+%[err3,z,wTest3] = localNoisyBPSimOld(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
  
- plot([1:numIter],err2,'r--')
+plot([1:numIter], wTest2,'r')
+%plot([1:numIter], wTest3)
+
+
+title('W11, T=20000')
+legend('exact bp','new noisy bp','old noisy bp')
+
+
+ %plot([1:numIter],err2,'r--')
  
- legend('bp','old local bp','new local bp')
+ %legend('bp','old local bp','new local bp')
  
  
  

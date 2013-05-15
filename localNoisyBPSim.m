@@ -1,4 +1,4 @@
-function [err, errSet] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
+function [err, errSet, wTest] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
 %Input one (in future generalize to more inputs)
 
 rng(randSeed) %seed random number generator
@@ -43,6 +43,8 @@ x = propNoisySig(x(:,:,1),s,W,noiseInit,T);
 
 %Now average the appropriate quantities
 
+%for method comparison
+wTest = zeros(numEx,numIter);
 
 for cnt=1:numIter
     [cnt,numIter]
@@ -55,7 +57,7 @@ for cnt=1:numIter
         dW = zeros(size(W));
         dW_R = zeros(M,N-1);
         correl = zeros(M,M,N-1);
-        %deltaX = zeros(M,1);
+        
         
         s = input(:,exCnt);
         %s
@@ -74,26 +76,36 @@ for cnt=1:numIter
 
         deltaX = mean(repmat(ySoln,[1,1,T])- x(:,N,:),3);
         
-        %exCnt
-        %deltaX
-              
-        for c=layUp;
-            tSet = 1:T-N+c;
-            for t=tSet
-                correl(:,:,c-1) = correl(:,:,c-1)+ x(:,N,t+(N-c))*noise(:,c,t)';
-            end
-            correl(:,:,c-1) = correl(:,:,c-1)/length(tSet); 
-            
-            dW_R(:,c-1) = correl(:,:,c-1)'*deltaX;
-        end
-
+        Energy = .5*sum((repmat(ySoln,[1,1,T])- x(:,N,:)).^2);
         
-        for c=layUp
-            dW(:,:,c-1) = gradStep*dW_R(:,c-1)*mean(x(:,c-1,:),3)';
+        
+        %Compute updates for each layer      
+        for c=layUp;
+            
+            Eset = Energy(:,:,N-c+1:T); %really a 1 by T matrix
+            xPrevSet = x(:,c-1,N-c+1:T);
+            
+            
+            xPrevSet = reshape(xPrevSet,1,M,T-N+c);
+            
+            corrTerm = repmat(Eset,M,1).*noise(:,c,1:T-(N-c));
+            dW(:,:,c-1) = -gradStep*mean(repmat(corrTerm,1,M).*repmat(xPrevSet,M,1),3);
         end
+        
+        
+        wTest(exCnt,cnt)=dW(1,1,1); %checking that an individual delta w follows the same rules.
         
         W= W+dW;   
        
+        
+        
+        
+        %These are two different ways of looking at the error, there will
+        %always be some average error with noise, but the term we are
+        %looking at is the performance of an averaging estimator
+        
+        %errSet(cnt,exCnt) = mean(Energy);
+        
         errSet(cnt, exCnt) = norm(deltaX)^2;
     end
     
