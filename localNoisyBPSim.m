@@ -1,4 +1,4 @@
-function [err] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
+function [err,W,Wtime] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, Wsoln, randSeed)
 %Input one (in future generalize to more inputs)
 
 rng(randSeed) %seed random number generator
@@ -26,14 +26,11 @@ g = @nonLin;
 %s = randn(M,1);
 
 %Init one possible correct set of weights
-Wsoln = (1/sqrt(M))*randn(M,M,N-1);
+%Wsoln = (1/sqrt(M))*randn(M,M,N-1);
 
 %Compute an output value the function can attain (at least with WCorr)
 ySolnSet = propSig(1,N,Wsoln,input);
 
-
-%Output a W for each iteration
-Wout = zeros(M,M,N-1,numIter);
 
 
 %Now we initialize the network
@@ -52,9 +49,12 @@ x = propNoisySig(x(:,:,1),s,W,noiseInit,T);
 
 %Now average the appropriate quantities
 
+Wtime = zeros(M,M,N-1,numIter);
+
 for cnt=1:numIter
     [cnt,numIter]
     
+    Wtime(:,:,:,cnt) = W;
     out = propSig(1,N,W,input);
     
      dY = ySolnSet - out;

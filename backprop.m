@@ -1,4 +1,4 @@
-function [err,errSet,W] = backprop(input,NumLayers, bpStep, numBP,randSeed)
+function [err,errSet,W, Wtime] = backprop(input,NumLayers, bpStep, numBP,Wsoln,randSeed)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
 
@@ -13,10 +13,6 @@ numEx=size(input,2);   %Number of examples
 errSet= zeros(numBP,numEx);
 g = @nonLin;
 
-
-%Init one possible correct set of weights
-Wsoln = (1/sqrt(M))*randn(M,M,N-1);
-%Wsoln = randn(M,M,N-1);
 
 
 %Compute an output value the function can attain (at least with WCorr)
@@ -35,10 +31,12 @@ for i=2:N
     x(:,i)=propSig(1,i,W,s);
 end
 
+Wtime = zeros(M,M,N-1,numBP);
 
 for cnt=1:numBP    
     [cnt,numBP];
     
+    Wtime(:,:,:,cnt) = W;
     
     %Check error of current solution
     out = propSig(1,N,W,input);

@@ -8,36 +8,55 @@ close all;
 dataDim=5;
 M=dataDim;
 
-numEx =1;
+numTrainEx =25;
 
 numLayers=3;
 N= numLayers;
-rng(5)
-input = randn(dataDim,numEx);
+rng(6)
+
+%Init one possible correct set of weights
+Wsoln = (1/sqrt(M))*randn(M,M,N-1);
+
+
+input = randn(dataDim,numTrainEx);
  
  %To optimize, want to find the step size to converge the fastest (so need
  %to modify functions: numIter-> maxIter and find a tolerance at which you can stop)
  
- numIter = 350;
+ numIter = 500;
  stepSz=.01;
  
- seed=17;
- Tavg = 500;
+ seed=7;
+ Tavg = 50;
  
  
- [err,errSet, W]=backprop(input,numLayers,stepSz,numIter,seed);
+[err,errSet, Wbp]=backprop(input,numLayers,stepSz,numIter,Wsoln, seed);
+ 
+[err1, WlocBP] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter, Wsoln, seed);
 
- %plot([1:numIter],err,'g');
- 
- %hold on;
- 
-  
- 
-[err] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter,seed);
+plot([1:numIter],err);
+hold on;
+plot([1:numIter],err1,'r--')
+
+
+
+%now perform cross validation based on more examples
+
+% numTestEx = 10;
+% 
+% testInput = randn(dataDim,numTestEx);
+% 
+% yTestSolnSet = propSig(1,N,Wsoln,testInput);
+% 
+
+
+
+
+
+
 
 %propSig(1,N,Wout,input);
 
-%plot([1:numIter],err1,'r--')
 
 
 
