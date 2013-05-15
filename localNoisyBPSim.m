@@ -1,9 +1,10 @@
-function [err, errSet, W] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
+function [err, energy, errSet, W] = localNoisyBPSim(input,NumLayers, epsilon, gradStep, Tavg, numIter, randSeed)
 %Input one (in future generalize to more inputs)
 
 rng(randSeed) %seed random number generator
 
 err = zeros(1,numIter);
+energy = zeros(1,numIter);
 
 M = size(input,1);
 N= NumLayers;
@@ -11,6 +12,8 @@ T = Tavg;
 
 numEx = size(input,2); %number of examples
 errSet = zeros(numIter,numEx);
+energySet = zeros(numIter,numEx);
+
 
 %numIter = 5000; (provided by input)- Note make this a maxIter and add a
 %convergence threshold
@@ -28,8 +31,14 @@ Wsoln = (1/sqrt(M))*randn(M,M,N-1);
 %Compute an output value the function can attain (at least with WCorr)
 ySolnSet = propSig(1,N,Wsoln,input);
 
+
+%Output a W for each iteration
+%Wout = zeros(M,M,N-1,numIter)
+
+
 %Now we initialize the network
 W = (1/sqrt(M))*randn(M,M,N-1);
+
 
 %Initialize network of Neurons (for the whole time window)
 x = zeros(M,N,T);
@@ -100,6 +109,7 @@ for cnt=1:numIter
         
         %errSet(cnt,exCnt) = mean(Energy);
         
+        energySet(cnt, exCnt) = mean(Energy);
         errSet(cnt, exCnt) = norm(deltaX)^2;
     end
     
@@ -108,6 +118,9 @@ end
 
 
 err =sum(errSet,2);
+energy =sum(energySet,2);
+
+
 
 end
 
