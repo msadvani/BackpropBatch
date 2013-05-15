@@ -6,13 +6,13 @@ close all;
 
 
 %% Parameters to vary
-dataDim=5;
-numTrainEx =30;
+dataDim=20;
+numTrainEx =20;
 numTestEx = 300;
-numLayers=3;
+numLayers=4;
 
-Tavg=30;
-numIter = 2000;
+Tavg=250;
+numIter = 1000;
 stepSz=.01;
 
  
@@ -75,7 +75,7 @@ hold on;
 plot([1:numIter],errBP);
 plot([1:numIter],errLocBP,'r--');
 
-title(['Test Err w/ ',num2str(numTestEx),' Examp, ',num2str(Tavg),' Tavg, and ',num2str(stepSz),' step size']);
+title(['Test Err w/ ',num2str(numTestEx),' Examp, ',num2str(Tavg),' Tavg, and ',num2str(stepSz),' step size', num2str(N),' layers', num3str(M),' dims']);
 ylabel('Error')
 xlabel('Iteration')
 legend('bp','bp local')
