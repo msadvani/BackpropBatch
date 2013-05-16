@@ -61,6 +61,8 @@ for cnt=1:numIter
      err(cnt)= norm(dY,'fro')^2;
     
     exSet = randperm(numEx);
+    
+    dWbatch = zeros(M,M,N-1);
    
     for exCnt = exSet
         
@@ -104,9 +106,8 @@ for cnt=1:numIter
         end
         
         
+        dWbatch = dWbatch+dW;
         
-        
-        W= W+dW;   
        
             
         %These are two different ways of looking at the error, there will
@@ -119,7 +120,7 @@ for cnt=1:numIter
         %errSet(cnt, exCnt) = norm(deltaX)^2;
     end
     
-    
+    W = W + dWbatch;
     %Wout(:,:,:,cnt)=W;
         
      

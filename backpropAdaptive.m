@@ -1,6 +1,16 @@
-function [err,errSet,W, Wtime] = backprop(input,NumLayers, bpStep, numBP,Wsoln,randSeed)
+function [err,errSet,W, Wtime] = backpropAdaptive(input,NumLayers, bpStep, numBP,Wsoln,randSeed)
 %Input one (in future generalize to more inputs)
 %E.g. initialize as backprop(randn(5,1),3,.01,10000)
+
+
+%Temporarily setting these adaptive values here
+a=.5*bpStep; 
+b=.1;
+K=8; %Number of time steps to be considered consistent
+
+
+
+
 
 rng(randSeed); %seed random number generator
 
@@ -33,8 +43,15 @@ end
 
 Wtime = zeros(M,M,N-1,numBP);
 
+%Error stored for updating parameters
+energy = zeros(1,numBP);
+lastUpdated = 0;
+deltaEnergy = zeros(1,K);
+
 for cnt=1:numBP    
     [cnt,numBP];
+    lastUpdated = lastUpdated+1;
+    
     
     Wtime(:,:,:,cnt) = W;
     
@@ -42,6 +59,10 @@ for cnt=1:numBP
     out = propSig(1,N,W,input);
     
     dY = ySolnSet - out;
+    
+    energy(cnt) = norm(dY,'fro');
+    
+    
     %currErr = 0; %Keep track of current error
     for i=1:numEx
         errSet(cnt,i) = norm(dY(:,i))^2;
@@ -81,9 +102,36 @@ for cnt=1:numBP
         end
        
                
-        dWbatch = dWbatch+bpStep*dW;
+        dWbatch = dWbatch+dW;
+        
     end
-    W = W+dWbatch;
+    %cnt
+    %energy(1:cnt)
+    
+    %updating bpStep
+    if (cnt>K)
+                
+        deltaEnergy= energy(cnt-K+1:cnt) - energy(cnt-K:cnt-1);
+        
+        
+        if ( deltaEnergy<0)
+            if( lastUpdated>=K)
+            bpStep = bpStep +a;
+            
+            lastUpdated=0;
+            end
+        elseif (deltaEnergy(K)>0)
+            
+            bpStep = bpStep*(1-b);
+            lastUpdated=0;
+            
+        end
+    end
+    
+    
+    W = W+bpStep*dWbatch;
+    
+    
         
 end
 err=sum(errSet,2);

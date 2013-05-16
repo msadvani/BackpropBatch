@@ -6,13 +6,13 @@ close all;
 
 
 %% Parameters to vary
-dataDim=20;
-numTrainEx =20;
+dataDim=30;
+numTrainEx =30;
 numTestEx = 300;
-numLayers=4;
+numLayers=3;
 
-Tavg=250;
-numIter = 1000;
+Tavg=100;
+numIter = 3000;
 stepSz=.01;
 
  
@@ -33,19 +33,19 @@ input = randn(dataDim,numTrainEx);
  %to modify functions: numIter-> maxIter and find a tolerance at which you can stop)
  
  
-[err,errSet, Wbp,WbpTime]=backprop(input,numLayers,stepSz,numIter,Wsoln, seed);
+[err,errSet, Wbp,WbpTime]=backpropAdaptive(input,numLayers,stepSz,numIter,Wsoln, seed);
  
-[err1, WlocBP, WlocBPTime] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter, Wsoln, seed);
+%[err1, WlocBP, WlocBPTime] = localNoisyBPSim(input,numLayers,sqrt(stepSz),1,Tavg, numIter, Wsoln, seed);
 
 subplot(1,2,1)
 hold on;
 plot([1:numIter],err)
-plot([1:numIter],err1,'r--')
+%plot([1:numIter],err1,'r--')
 
 title(['Train Err w/ ',num2str(numTrainEx),' Examp, ',num2str(Tavg),' Tavg, and ',num2str(stepSz),' step size']);
 ylabel('Error')
 xlabel('Iteration')
-legend('bp','bp local')
+%legend('bp','bp local')
 
 
 
@@ -55,30 +55,30 @@ legend('bp','bp local')
 
 
  
-testInput = randn(dataDim,numTestEx);
- 
-ySolnSet = propSig(1,N,Wsoln,testInput);
-
-errBP = zeros(1,numIter);
-errLocBP = zeros(1,numIter);
-for cnt=1:numIter
-yBP = propSig(1,N,WbpTime(:,:,:,cnt),testInput);
-errBP(cnt)=norm(yBP-ySolnSet,'fro')^2;
-
-ylocBP = propSig(1,N,WlocBPTime(:,:,:,cnt),testInput);
-errLocBP(cnt) = norm(ylocBP-ySolnSet,'fro')^2;
-
-end
-
-subplot(1,2,2)
-hold on;
-plot([1:numIter],errBP);
-plot([1:numIter],errLocBP,'r--');
-
-title(['Test Err w/ ',num2str(numTestEx),' Examp, ',num2str(Tavg),' Tavg, and ',num2str(stepSz),' step size', num2str(N),' layers', num3str(M),' dims']);
-ylabel('Error')
-xlabel('Iteration')
-legend('bp','bp local')
+% testInput = randn(dataDim,numTestEx);
+%  
+% ySolnSet = propSig(1,N,Wsoln,testInput);
+% 
+% errBP = zeros(1,numIter);
+% errLocBP = zeros(1,numIter);
+% for cnt=1:numIter
+% yBP = propSig(1,N,WbpTime(:,:,:,cnt),testInput);
+% errBP(cnt)=norm(yBP-ySolnSet,'fro')^2;
+% 
+% ylocBP = propSig(1,N,WlocBPTime(:,:,:,cnt),testInput);
+% errLocBP(cnt) = norm(ylocBP-ySolnSet,'fro')^2;
+% 
+% end
+% 
+% subplot(1,2,2)
+% hold on;
+% plot([1:numIter],errBP);
+% plot([1:numIter],errLocBP,'r--');
+% 
+% title(['Test Err w/ ',num2str(numTestEx),' Examp, ',num2str(Tavg),' Tavg, and ',num2str(stepSz),' step size, ', num2str(N),' layers, ', num2str(M),' dims']);
+% ylabel('Error')
+% xlabel('Iteration')
+%legend('bp','bp local')
 
 
 
